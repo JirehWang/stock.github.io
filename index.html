@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台股五大可積極佈局優勢股報告 (低檔佈局優先版)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #070b19;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.07);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            --accent-gold: #f59e0b;
+            --accent-purple: #8b5cf6;
+            --glow-green: rgba(16, 185, 129, 0.15);
+            --glow-blue: rgba(59, 130, 246, 0.15);
+            --glow-purple: rgba(139, 92, 246, 0.15);
+            --glass-blur: blur(12px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.05em;
+        }
+
+        .header-meta {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-regime {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 10px var(--glow-green);
+        }
+
+        .badge-date {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Macro Info Block */
+        .macro-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+            backdrop-filter: var(--glass-blur);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .macro-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .macro-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .macro-item {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .macro-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .macro-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Equation Section */
+        .formula-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .formula-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .formula-content {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            color: var(--text-primary);
+        }
+
+        .formula-content span {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        /* Table Styles */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 4rem;
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 1.2rem 1.5rem;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        tr:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        .upside-positive {
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        .table-symbol {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .table-symbol span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-left: 0.4rem;
+        }
+
+        .priority-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .priority-first {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--accent-gold);
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.2);
+        }
+
+        /* Stock Detail Cards */
+        .stock-section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            border-left: 4px solid var(--accent-green);
+            padding-left: 0.75rem;
+        }
+
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .stock-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: var(--glass-blur);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stock-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(59, 130, 246, 0.25);
+        }
+
+        .stock-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+        }
+
+        .stock-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stock-identity h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .stock-identity span {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-left: 0.5rem;
+        }
+
+        .stock-score-badge {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            box-shadow: 0 0 10px var(--glow-purple);
+        }
+
+        .stock-meta-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .meta-item-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-item-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Tabs Interface */
+        .tabs-nav {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .detail-item-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-item-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .deduction-list {
+            margin-top: 1rem;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            padding: 1rem;
+            border-radius: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .deduction-item {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            padding: 0.2rem 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+        }
+
+        .deduction-item span.price {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Alerts and Notes */
+        .strategy-note {
+            background-color: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 3rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .strategy-note strong {
+            color: var(--accent-blue);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 5rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--card-border);
+            padding-top: 2rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            th, td {
+                padding: 1rem;
+            }
+            .stock-meta-info {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>台股五大可積極佈局優勢股報告</h1>
+        <div class="header-meta">
+            <span class="badge badge-regime">多頭市場 (EXPANSION)</span>
+            <span class="badge badge-date">分析日期: 2026-06-15</span>
+        </div>
+    </header>
+
+    <div class="strategy-note">
+        <strong>佈局策略說明：</strong>
+        目前大盤處於資金偏中性的景氣擴張期。本報告依據<strong>「低檔佈局、高安全邊際、拉回季月線支撐」</strong>為首要篩選原則，剔除目前處於 60 日高點的突破追高型股票（如至上 8112），精選出以下五大核心佈局標的，並加入<strong>【季線扣抵分析】</strong>，用以精準研判中線均線的斜率與助漲/助跌力道。
+    </div>
+
+    <div class="formula-card">
+        <div class="formula-title">多頭市場綜合評分公式</div>
+        <div class="formula-content">
+            綜合評分 = <span>產業/總經 (35%)</span> + <span>基本面體質 (20%)</span> + <span>籌碼面解析 (25%)</span> + <span>技術指標面 (20%)</span>
+        </div>
+    </div>
+
+    <!-- Overview Table -->
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>優先順位</th>
+                    <th>個股簡稱</th>
+                    <th>當前股價</th>
+                    <th>進場佈局區間</th>
+                    <th>目標價</th>
+                    <th>預估上漲空間</th>
+                    <th>止損價</th>
+                    <th>季線 (MA50) 斜率與扣抵狀態</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="priority-circle priority-first">1</span></td>
+                    <td class="table-symbol">陽明<span>2609</span></td>
+                    <td>52.4 元</td>
+                    <td>50.0 ~ 51.2 元</td>
+                    <td>57.0 元</td>
+                    <td><span class="upside-positive">+8.8%</span></td>
+                    <td>47.0 元</td>
+                    <td style="color: var(--accent-gold);">扣抵值 52.70 元，即將扣低轉上揚</td>
+                </tr>
+                <tr>
+                    <td><span class="priority-circle">2</span></td>
+                    <td class="table-symbol">AES-KY<span>6781</span></td>
+                    <td>1145.0 元</td>
+                    <td>1120 ~ 1160 元</td>
+                    <td>1350.0 元</td>
+                    <td><span class="upside-positive">+17.9%</span></td>
+                    <td>1080.0 元</td>
+                    <td style="color: var(--accent-green);">扣抵值 998.00 元，持續陡峭上揚</td>
+                </tr>
+                <tr>
+                    <td><span class="priority-circle">3</span></td>
+                    <td class="table-symbol">鴻海<span>2317</span></td>
+                    <td>260.5 元</td>
+                    <td>255 ~ 268 元</td>
+                    <td>315.0 元</td>
+                    <td><span class="upside-positive">+20.9%</span></td>
+                    <td>238.0 元</td>
+                    <td style="color: var(--accent-green);">扣抵值 197.00 元，極度陡峭上升</td>
+                </tr>
+                <tr>
+                    <td><span class="priority-circle">4</span></td>
+                    <td class="table-symbol">台積電<span>2330</span></td>
+                    <td>2310.0 元</td>
+                    <td>2350 ~ 2380 元</td>
+                    <td>2750.0 元</td>
+                    <td><span class="upside-positive">+19.0%</span></td>
+                    <td>2150.0 元</td>
+                    <td style="color: var(--accent-green);">扣抵值 1850.00 元，穩定上揚助漲</td>
+                </tr>
+                <tr>
+                    <td><span class="priority-circle">5</span></td>
+                    <td class="table-symbol">微星<span>2377</span></td>
+                    <td>136.5 元</td>
+                    <td>130.0 ~ 138.0 元</td>
+                    <td>170.0 元</td>
+                    <td><span class="upside-positive">+24.5%</span></td>
+                    <td>118.0 元</td>
+                    <td style="color: var(--accent-green);">扣抵值 88.10 元，加速陡峭上揚</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Detailed Cards Section -->
+    <div class="stock-section-title">五大精選個股四維度深度剖析</div>
+    
+    <div class="cards-grid">
+        
+        <!-- CARD 1: YANG MING -->
+        <div class="stock-card" id="card-2609">
+            <div class="stock-card-header">
+                <div class="stock-identity">
+                    <h2>陽明<span>2609</span></h2>
+                </div>
+                <div class="stock-score-badge">
+                    綜合評分 72.11
+                </div>
+            </div>
+            
+            <div class="stock-meta-info">
+                <div>
+                    <div class="meta-item-label">低檔佈局優先級</div>
+                    <div class="meta-item-value" style="color: var(--accent-gold); font-weight: 800;">第 1 順位 (防禦首選)</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">進場區間</div>
+                    <div class="meta-item-value">50.0 ~ 51.2 元</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">預估上漲空間</div>
+                    <div class="meta-item-value" style="color: var(--accent-green);">+8.8%</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">止損價</div>
+                    <div class="meta-item-value" style="color: var(--accent-red);">47.0 元</div>
+                </div>
+            </div>
+
+            <div class="tabs-nav" data-stock="2609">
+                <button class="tab-btn active" data-tab="macro">產業與總經</button>
+                <button class="tab-btn" data-tab="fund">基本面體質</button>
+                <button class="tab-btn" data-tab="chips">籌碼面解析</button>
+                <button class="tab-btn" data-tab="tech">技術與扣抵</button>
+            </div>
+
+            <!-- Tab Content 2609 -->
+            <div class="tab-container" data-stock="2609">
+                <div class="tab-content active" data-tab-content="macro">
+                    <h4 class="detail-item-title">紅海危機常態化與美線旺季補庫</h4>
+                    <p class="detail-item-text">地緣政治（紅海危機）常態化，全球船舶被迫繞道好望角，大幅消化市場運力。加之美線及歐線旺季補庫存需求，SCFI 運價指數維持高位。股價處於 50 日季線附近築底，距離 60 日最低點僅 +9.05%，左側低檔佈局的安全邊際極高。</p>
+                </div>
+                <div class="tab-content" data-tab-content="fund">
+                    <h4 class="detail-item-title">超高每股淨值與歷史低本益比</h4>
+                    <p class="detail-item-text">基本面體質得分 90.00 分（全市場最高）。每股淨值極高，本益比（P/E）與股價淨值比（P/B）皆處於歷史極低水位。公司手握龐大現金儲備，提供了極高的清算價值與中長期配息底牌。</p>
+                </div>
+                <div class="tab-content" data-tab-content="chips">
+                    <h4 class="detail-item-title">散戶停損浮額沉澱，投信加碼鎖碼</h4>
+                    <p class="detail-item-text">投信與中線價值法人默默進場加碼。市場社群（輿情 50）散戶因短線運價波動大量割肉停損，融資水位顯著降低，籌碼正從短期投機客流向中長線資金，有利於股價穩健築底。</p>
+                </div>
+                <div class="tab-content" data-tab-content="tech">
+                    <h4 class="detail-item-title">季線扣抵即將扣低，預告均線轉上揚助漲</h4>
+                    <p class="detail-item-text">技術面（48.97分）雖缺乏短期追價買盤，但下方 47 元（近 60 日最低點）支撐強勁。<br>
+                    <strong>季線扣抵分析</strong>：當前扣抵值在 52.70 元高檔區，但在未來 15 個交易日，扣抵值將<strong>陡峭下行至 49.15 ~ 50.70 元</strong>的低檔區。只要股價在現價 52.4 元以上，季線即將「扣低轉上揚」形成助漲軌道。</p>
+                    <div class="deduction-list">
+                        <div class="deduction-item"><span>04-01 (扣抵中)</span><span class="price">52.70</span></div>
+                        <div class="deduction-item"><span>04-07 (未來)</span><span class="price">51.70</span></div>
+                        <div class="deduction-item"><span>04-13 (未來)</span><span class="price">50.60</span></div>
+                        <div class="deduction-item"><span>04-20 (未來)</span><span class="price">50.10</span></div>
+                        <div class="deduction-item"><span>04-30 (未來)</span><span class="price">49.15</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: AES-KY -->
+        <div class="stock-card" id="card-6781">
+            <div class="stock-card-header">
+                <div class="stock-identity">
+                    <h2>AES-KY<span>6781</span></h2>
+                </div>
+                <div class="stock-score-badge">
+                    綜合評分 71.57
+                </div>
+            </div>
+            
+            <div class="stock-meta-info">
+                <div>
+                    <div class="meta-item-label">低檔佈局優先級</div>
+                    <div class="meta-item-value" style="color: var(--accent-blue);">第 2 順位</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">進場區間</div>
+                    <div class="meta-item-value">1120 ~ 1160 元</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">預估上漲空間</div>
+                    <div class="meta-item-value" style="color: var(--accent-green);">+17.9% <span style="font-size: 0.8rem; color: var(--text-secondary);">(長線+26.6%)</span></div>
+                </div>
+                <div>
+                    <div class="meta-item-label">止損價</div>
+                    <div class="meta-item-value" style="color: var(--accent-red);">1080.0 元</div>
+                </div>
+            </div>
+
+            <div class="tabs-nav" data-stock="6781">
+                <button class="tab-btn active" data-tab="macro">產業與總經</button>
+                <button class="tab-btn" data-tab="fund">基本面體質</button>
+                <button class="tab-btn" data-tab="chips">籌碼面解析</button>
+                <button class="tab-btn" data-tab="tech">技術與扣抵</button>
+            </div>
+
+            <!-- Tab Content 6781 -->
+            <div class="tab-container" data-stock="6781">
+                <div class="tab-content active" data-tab-content="macro">
+                    <h4 class="detail-item-title">資料中心 BBU 標配化與 LEV 庫存去化結束</h4>
+                    <p class="detail-item-text">NVIDIA 次世代 AI 伺服器架構將 BBU（電池備援系統）列為標配，引爆高單價雲端資料中心建置出貨潮。另外 LEV（輕型電動車）在歐洲去庫存基本步向尾聲。在多頭大盤下，此類具備定價權的高階電池廠為成長首選。</p>
+                </div>
+                <div class="tab-content" data-tab-content="fund">
+                    <h4 class="detail-item-title">客製化壁壘帶來極高毛利與 EPS 成長</h4>
+                    <p class="detail-item-text">基本面體質得分 88.63 分。因電池包安全與安全性規格高，公司毛利率與淨利率維持在行業頂尖水平。營業利潤率優異，反映出極強的成本轉嫁與經營能力，EPS 增長動能強烈。</p>
+                </div>
+                <div class="tab-content" data-tab-content="chips">
+                    <h4 class="detail-item-title">股權集中度高，幾乎無散戶籌碼干擾</h4>
+                    <p class="detail-item-text">籌碼安定度高（風險僅 12.30）。母公司新普集團長期鎖碼持股，外資與長線大戶長抱。融資水位極低，市場社群討論度低，主力控盤能力極強，無浮額踩踏壓力。</p>
+                </div>
+                <div class="tab-content" data-tab-content="tech">
+                    <h4 class="detail-item-title">股價健康拉回，季線斜率強勢上揚助漲</h4>
+                    <p class="detail-item-text">股價（1145 元）高檔拉回至月線與季線之間進行中線整理，RSI 50.50 回落至健康水位。<br>
+                    <strong>季線扣抵分析</strong>：當前扣抵值位於 998 元低檔，遠低於現價。未來 15 天扣抵價均在 957 ~ 1120 元之間（平均約 1010 元），保證**季線（約 1122 元）將持續以陡峭斜率向上助漲**。</p>
+                    <div class="deduction-list">
+                        <div class="deduction-item"><span>04-01 (扣抵中)</span><span class="price">998.00</span></div>
+                        <div class="deduction-item"><span>04-02 (未來)</span><span class="price">957.00</span></div>
+                        <div class="deduction-item"><span>04-08 (未來)</span><span class="price">1015.00</span></div>
+                        <div class="deduction-item"><span>04-17 (未來)</span><span class="price">1040.00</span></div>
+                        <div class="deduction-item"><span>04-22 (未來)</span><span class="price">1120.00</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3: HON HAI -->
+        <div class="stock-card" id="card-2317">
+            <div class="stock-card-header">
+                <div class="stock-identity">
+                    <h2>鴻海<span>2317</span></h2>
+                </div>
+                <div class="stock-score-badge">
+                    綜合評分 72.44
+                </div>
+            </div>
+            
+            <div class="stock-meta-info">
+                <div>
+                    <div class="meta-item-label">低檔佈局優先級</div>
+                    <div class="meta-item-value" style="color: var(--accent-blue);">第 3 順位</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">進場區間</div>
+                    <div class="meta-item-value">255 ~ 268 元</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">預估上漲空間</div>
+                    <div class="meta-item-value" style="color: var(--accent-green);">+20.9%</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">止損價</div>
+                    <div class="meta-item-value" style="color: var(--accent-red);">238.0 元</div>
+                </div>
+            </div>
+
+            <div class="tabs-nav" data-stock="2317">
+                <button class="tab-btn active" data-tab="macro">產業與總經</button>
+                <button class="tab-btn" data-tab="fund">基本面體質</button>
+                <button class="tab-btn" data-tab="chips">籌碼面解析</button>
+                <button class="tab-btn" data-tab="tech">技術與扣抵</button>
+            </div>
+
+            <!-- Tab Content 2317 -->
+            <div class="tab-container" data-stock="2317">
+                <div class="tab-content active" data-tab-content="macro">
+                    <h4 class="detail-item-title">AI 伺服器代工霸主，全球 CSP 資本開支受惠者</h4>
+                    <p class="detail-item-text">作為 NVIDIA GB200 架構最核心的整機櫃組裝夥伴，市佔率高達四成以上。受惠於全球大型資料中心資本支出爆發，產能垂直整合壁壘強。大盤多頭期，AI 伺服器龍頭具備高度的估值重估動能。</p>
+                </div>
+                <div class="tab-content" data-tab-content="fund">
+                    <h4 class="detail-item-title">產品組合轉佳，營收規模擴大與業外利息貢獻</h4>
+                    <p class="detail-item-text">基本面體質得分 80.00 分。AI 伺服器出貨占比擴大，帶動毛利率與營業利益率上揚。EPS 增長動能強烈，且全球高利率環境使公司龐大資金享有可觀的利息收益，財務穩健度極高。</p>
+                </div>
+                <div class="tab-content" data-tab-content="chips">
+                    <h4 class="detail-item-title">外資法人階段性調節，投信與大戶持續鎖碼</h4>
+                    <p class="detail-item-text">近期回檔主要受外資高檔部分獲利了結影響，但國內投信維持多頭買超。融資餘額無飆升現象，籌碼高度集中在法人與壽險長線資金，籌碼結構健康。</p>
+                </div>
+                <div class="tab-content" data-tab-content="tech">
+                    <h4 class="detail-item-title">回檔修正 15% 乖離，季線極度陡峭助漲</h4>
+                    <p class="detail-item-text">最新股價 260.5 元，股價跌破月線但極度接近季線 (240.84)。RSI 回落至 48.85（強勢股的超賣區），中線格局無反轉跡象。<br>
+                    <strong>季線扣抵分析</strong>：目前扣抵價格僅為 **197.00 元**，現價與 50 天前扣抵有巨大正偏差，這使得**季線維持極度陡峭上揚軌道**，未來 15 天扣抵依然偏低（最高 225 元），均線防禦力極強。</p>
+                    <div class="deduction-list">
+                        <div class="deduction-item"><span>04-01 (扣抵中)</span><span class="price">197.00</span></div>
+                        <div class="deduction-item"><span>04-07 (未來)</span><span class="price">192.00</span></div>
+                        <div class="deduction-item"><span>04-14 (未來)</span><span class="price">207.50</span></div>
+                        <div class="deduction-item"><span>04-21 (未來)</span><span class="price">211.00</span></div>
+                        <div class="deduction-item"><span>04-23 (未來)</span><span class="price">225.00</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 4: TSMC -->
+        <div class="stock-card" id="card-2330">
+            <div class="stock-card-header">
+                <div class="stock-identity">
+                    <h2>台積電<span>2330</span></h2>
+                </div>
+                <div class="stock-score-badge">
+                    綜合評分 72.50
+                </div>
+            </div>
+            
+            <div class="stock-meta-info">
+                <div>
+                    <div class="meta-item-label">低檔佈局優先級</div>
+                    <div class="meta-item-value" style="color: var(--accent-blue);">第 4 順位</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">進場區間</div>
+                    <div class="meta-item-value">2350 ~ 2380 元</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">預估上漲空間</div>
+                    <div class="meta-item-value" style="color: var(--accent-green);">+19.0%</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">止損價</div>
+                    <div class="meta-item-value" style="color: var(--accent-red);">2150.0 元</div>
+                </div>
+            </div>
+
+            <div class="tabs-nav" data-stock="2330">
+                <button class="tab-btn active" data-tab="macro">產業與總經</button>
+                <button class="tab-btn" data-tab="fund">基本面體質</button>
+                <button class="tab-btn" data-tab="chips">籌碼面解析</button>
+                <button class="tab-btn" data-tab="tech">技術與扣抵</button>
+            </div>
+
+            <!-- Tab Content 2330 -->
+            <div class="tab-container" data-stock="2330">
+                <div class="tab-content active" data-tab-content="macro">
+                    <h4 class="detail-item-title">全球先進製程與 AI 晶片霸主，海外建廠利空出盡</h4>
+                    <p class="detail-item-text">3nm/2nm 先進製程市佔率近乎 100%。AI 晶片封裝（CoWoS）產能供不應求。最新財務數據顯示，美國廠與熊本廠已雙雙實現單季獲利轉正，海外建廠對毛利率的利空影響淡化。大盤雙牛格局下，台積電為無可替代的核心資產。</p>
+                </div>
+                <div class="tab-content" data-tab-content="fund">
+                    <h4 class="detail-item-title">超群的營業利潤率與高額資本支出壁壘</h4>
+                    <p class="detail-item-text">基本面體質得分 85.54 分。營業利益率與毛利率均位居全球半導體頂點（預期維持 53% 以上）。龐大的資本支出構成其他對手無法跨越的技術壁壘，EPS 增長動能極為穩固。</p>
+                </div>
+                <div class="tab-content" data-tab-content="chips">
+                    <h4 class="detail-item-title">籌碼高度法人化，融資水位處於歷史極低檔</h4>
+                    <p class="detail-item-text">融資餘額處於歷史極低水準（僅 0.09 億元），顯示股權高度集中於全球外資、壽險及主權基金。幾乎無散戶追高套牢壓力，籌碼面極其乾淨沉澱。</p>
+                </div>
+                <div class="tab-content" data-tab-content="tech">
+                    <h4 class="detail-item-title">月線上方箱型整理，季線穩定上揚助漲</h4>
+                    <p class="detail-item-text">股價（2310 元）在創高後目前於月線附近進行健康的箱型整理，乖離率已合理修正。<br>
+                    <strong>季線扣抵分析</strong>：目前季線扣抵值在 **1850.06 元**，遠低於現價。未來兩週扣抵價格最高亦僅上升至 2079 元，台積電強健的價格保證了**季線（目前 2183 元）將持續以陡峭斜率上揚助漲**。</p>
+                    <div class="deduction-list">
+                        <div class="deduction-item"><span>04-01 (扣抵中)</span><span class="price">1850.06</span></div>
+                        <div class="deduction-item"><span>04-08 (未來)</span><span class="price">1944.81</span></div>
+                        <div class="deduction-item"><span>04-14 (未來)</span><span class="price">2049.53</span></div>
+                        <div class="deduction-item"><span>04-17 (未來)</span><span class="price">2024.60</span></div>
+                        <div class="deduction-item"><span>04-23 (未來)</span><span class="price">2074.47</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 5: MSI -->
+        <div class="stock-card" id="card-2377">
+            <div class="stock-card-header">
+                <div class="stock-identity">
+                    <h2>微星<span>2377</span></h2>
+                </div>
+                <div class="stock-score-badge">
+                    綜合評分 74.82
+                </div>
+            </div>
+            
+            <div class="stock-meta-info">
+                <div>
+                    <div class="meta-item-label">低檔佈局優先級</div>
+                    <div class="meta-item-value" style="color: var(--accent-blue);">第 5 順位</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">進場區間</div>
+                    <div class="meta-item-value">130.0 ~ 138.0 元</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">預估上漲空間</div>
+                    <div class="meta-item-value" style="color: var(--accent-green);">+24.5%</div>
+                </div>
+                <div>
+                    <div class="meta-item-label">止損價</div>
+                    <div class="meta-item-value" style="color: var(--accent-red);">118.0 元</div>
+                </div>
+            </div>
+
+            <div class="tabs-nav" data-stock="2377">
+                <button class="tab-btn active" data-tab="macro">產業與總經</button>
+                <button class="tab-btn" data-tab="fund">基本面體質</button>
+                <button class="tab-btn" data-tab="chips">籌碼面解析</button>
+                <button class="tab-btn" data-tab="tech">技術與扣抵</button>
+            </div>
+
+            <!-- Tab Content 2377 -->
+            <div class="tab-container" data-stock="2377">
+                <div class="tab-content active" data-tab-content="macro">
+                    <h4 class="detail-item-title">AI PC 升級與高階顯卡需求復甦</h4>
+                    <p class="detail-item-text">微軟 Win 10 退役推動辦公與遊戲 PC 換機潮。次世代高利潤顯卡出貨，加上 AI PC 技術定價拉高，有助於微星在高階電競市場的利潤提升。在景氣擴張大盤下，消費性電子正由底部溫步走升。</p>
+                </div>
+                <div class="tab-content" data-tab-content="fund">
+                    <h4 class="detail-item-title">強大自有品牌力與零借款財務韌性</h4>
+                    <p class="detail-item-text">基本面體質得分 80.00 分。以自有品牌「MSI」行銷全球，毛利率與淨利表現穩定。公司零負債、擁有充沛現金流，歷年配息大方，EPS 與殖利率提供了極強的防禦防護。</p>
+                </div>
+                <div class="tab-content" data-tab-content="chips">
+                    <h4 class="detail-item-title">法人持股穩定，融資無過熱現象</h4>
+                    <p class="detail-item-text">三大法人近期溫和買超進行避險與價值建倉。融資餘額控制在中低水位，市場散戶並無瘋狂追買或套牢踩踏跡象，籌碼沉澱健康。</p>
+                </div>
+                <div class="tab-content" data-tab-content="tech">
+                    <h4 class="detail-item-title">多頭排列架構，季線陡峭斜率上揚</h4>
+                    <p class="detail-item-text">股價最新收 136.5 元，均線多頭發散，股價站穩月線 (129.85) 與季線 (109.99) 之上。MACD 柱狀體維持正值，短中期上升趨勢未變。<br>
+                    <strong>季線扣抵分析</strong>：當前扣抵值位於極低檔 **88.10 元**。未來 15 天扣抵價均在 87.20 ~ 98.00 元低檔，現價與扣抵偏差高達 55%，使得**季線維持加速陡峭上揚**，提供股價極強的中線保護力。</p>
+                    <div class="deduction-list">
+                        <div class="deduction-item"><span>04-01 (扣抵中)</span><span class="price">88.10</span></div>
+                        <div class="deduction-item"><span>04-07 (未來)</span><span class="price">89.20</span></div>
+                        <div class="deduction-item"><span>04-14 (未來)</span><span class="price">88.90</span></div>
+                        <div class="deduction-item"><span>04-21 (未來)</span><span class="price">93.80</span></div>
+                        <div class="deduction-item"><span>04-23 (未來)</span><span class="price">98.00</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>台股個人 AI 監控系統 API 後端驅動 • 報告由 tw_stock_agent 專家推理系統自動生成</p>
+    </footer>
+</div>
+
+<script>
+    // Tabs Navigation Interactive Logic
+    document.querySelectorAll('.tabs-nav').forEach(nav => {
+        const stock = nav.getAttribute('data-stock');
+        const buttons = nav.querySelectorAll('.tab-btn');
+        const container = document.querySelector(`.tab-container[data-stock="${stock}"]`);
+        
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                
+                // Toggle active state in buttons
+                buttons.forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Toggle active state in contents
+                const contents = container.querySelectorAll('.tab-content');
+                contents.forEach(content => {
+                    if (content.getAttribute('data-tab-content') === targetTab) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            });
+        });
+    });
+</script>
+</body>
+</html>
