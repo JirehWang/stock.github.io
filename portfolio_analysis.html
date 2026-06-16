@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台股 29 檔投組操作策略分析報告</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #070b19;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.07);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            --accent-gold: #f59e0b;
+            --accent-purple: #8b5cf6;
+            --glow-green: rgba(16, 185, 129, 0.15);
+            --glow-blue: rgba(59, 130, 246, 0.15);
+            --glow-purple: rgba(139, 92, 246, 0.15);
+            --glass-blur: blur(12px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem auto 2.5rem auto;
+            padding: 0.4rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--card-border);
+            border-radius: 50px;
+            backdrop-filter: var(--glass-blur);
+            max-width: fit-content;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 2.3rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.04em;
+        }
+
+        .header-meta {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-regime {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .badge-count {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Filter Controls */
+        .controls-wrapper {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            padding: 0.75rem 1.2rem;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            width: 80px;
+        }
+
+        .btn-filter {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-filter:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-filter.active {
+            color: var(--text-primary);
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Stock Cards Grid */
+        .stocks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stock-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: var(--glass-blur);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stock-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .stock-title h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .stock-title span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .stock-cat-badge {
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            display: inline-block;
+        }
+
+        /* Action Badges */
+        .badge-action {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+        }
+
+        .badge-buy {
+            background-color: rgba(16, 185, 129, 0.12);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-hold {
+            background-color: rgba(59, 130, 246, 0.12);
+            color: var(--accent-blue);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .badge-sell {
+            background-color: rgba(239, 44, 44, 0.12);
+            color: var(--accent-red);
+            border: 1px solid rgba(239, 44, 44, 0.3);
+        }
+
+        .badge-special {
+            background-color: rgba(139, 92, 246, 0.12);
+            color: var(--accent-purple);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        /* Quote Row */
+        .quote-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .quote-item {
+            text-align: center;
+        }
+
+        .quote-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.15rem;
+        }
+
+        .quote-val {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .change-positive {
+            color: var(--accent-green);
+        }
+
+        .change-negative {
+            color: var(--accent-red);
+        }
+
+        /* Strategy Body */
+        .strategy-body {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+
+        /* Target row */
+        .target-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .target-item span {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Hidden cards placeholder */
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            color: var(--text-secondary);
+            display: none;
+            grid-column: 1 / -1;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .stocks-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-row {
+                flex-direction: column;
+            }
+            .filter-group {
+                gap: 0.4rem;
+            }
+            .filter-label {
+                width: 100%;
+                margin-bottom: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">🎯 核心五大佈局股</a>
+        <a href="portfolio_analysis.html" class="nav-link active">📊 29檔投組操作策略</a>
+    </nav>
+
+    <header>
+        <h1>台股 29 檔個股投組操作分析</h1>
+        <div class="header-meta">
+            <span class="badge badge-regime">多頭市場 (EXPANSION)</span>
+            <span class="badge badge-count">共追蹤分析 29 檔標的</span>
+        </div>
+    </header>
+
+    <!-- Controls Row -->
+    <div class="controls-wrapper">
+        <div class="search-row">
+            <input type="text" id="searchInput" class="search-input" placeholder="💡 輸入股票名稱、代碼或英文名稱進行搜尋...">
+        </div>
+        
+        <!-- Filter Category -->
+        <div class="filter-group">
+            <div class="filter-label">個股板塊：</div>
+            <button class="btn-filter active" data-filter-cat="all">全部</button>
+            <button class="btn-filter" data-filter-cat="semiconductor">AI與半導體</button>
+            <button class="btn-filter" data-filter-cat="energy">電力與能源</button>
+            <button class="btn-filter" data-filter-cat="hardware">網通與精密科技</button>
+            <button class="btn-filter" data-filter-cat="traditional">傳產與材料醫療</button>
+            <button class="btn-filter" data-filter-cat="etf">ETF與特殊</button>
+        </div>
+
+        <!-- Filter Action -->
+        <div class="filter-group">
+            <div class="filter-label">操作策略：</div>
+            <button class="btn-filter active" data-filter-act="all">全部</button>
+            <button class="btn-filter" data-filter-act="buy">佈局買進</button>
+            <button class="btn-filter" data-filter-act="hold">區間持有</button>
+            <button class="btn-filter" data-filter-act="sell">逢高避開</button>
+            <button class="btn-filter" data-filter-act="special">特殊狀態</button>
+        </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="stocks-grid" id="stocksGrid">
+        
+        <!-- Stock Cards Placeholder -->
+                <div class="stock-card" data-cat="energy" data-act="buy" data-search-text="6409 旭隼 voltronic power technology corp electrical equipment & parts">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>旭隼<span>6409</span></h2>
+                        <span class="stock-cat-badge">電力與能源</span>
+                    </div>
+                    <span class="badge-action badge-buy">分批佈局 (Buy)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">903.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -3.63%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">25.903614 倍 / 4.59%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    全球UPS（不斷電系統）龍頭。受惠綠電與雲端資料中心大趨勢，高單價高防禦，殖利率高達 4.59% 提供優異保護，建議於 880-910 元分批低吸。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>880 ~ 910 元</span></div>
+                <div class="target-item">目標價：<span>1050 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="energy" data-act="buy" data-search-text="6412 群電 chicony power technology co ltd electrical equipment & parts">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>群電<span>6412</span></h2>
+                        <span class="stock-cat-badge">電力與能源</span>
+                    </div>
+                    <span class="badge-action badge-buy">分批佈局 (Buy)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">91.6 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -2.76%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">17.786407 倍 / 3.93%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    高階伺服器電源、太空與衛星通訊電源出貨增溫。PE 僅約 17 倍具備良好性價比，且具 3.93% 殖利率防禦。季線附近為極佳中長線進場點。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>88 ~ 92 元</span></div>
+                <div class="target-item">目標價：<span>110 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="semiconductor" data-act="sell" data-search-text="6693 廣閎科 inergy semiconductors">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>廣閎科<span>6693</span></h2>
+                        <span class="stock-cat-badge">AI與半導體</span>
+                    </div>
+                    <span class="badge-action badge-sell">觀望避開 (Sell)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">178.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -4.04%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">57.23473 倍 / 1.08%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    雖有散熱與電機驅動IC題材，但目前獲利轉負 (EPS -0.09)，估值推升至 57 倍以上，利潤率承壓，建議暫行觀望，待毛利改善再行操作。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>暫無</span></div>
+                <div class="target-item">目標價：<span>無</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="energy" data-act="hold" data-search-text="6781 AES-KY advanced energy solution holdin electrical equipment & parts">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>AES-KY<span>6781</span></h2>
+                        <span class="stock-cat-badge">電力與能源</span>
+                    </div>
+                    <span class="badge-action badge-hold">區間操作 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">1155.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -1.28%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">30.283167 倍 / 1.07%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    輝達次世代架構將 BBU（電池備援系統）列為伺服器機櫃標配，公司為最大受惠者。股價處於歷史高檔，建議持股者沿 10 日線偏多抱緊，空手者等拉回月線再議。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>1120 ~ 1160 元</span></div>
+                <div class="target-item">目標價：<span>1350 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="hardware" data-act="sell" data-search-text="6831 邁科 taiwan microloops corp specialty industrial machinery">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>邁科<span>6831</span></h2>
+                        <span class="stock-cat-badge">網通與精密科技</span>
+                    </div>
+                    <span class="badge-action badge-sell">逢高減碼 (Sell)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">705.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -5.62%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">143.00203 倍 / 0.4%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    伺服器散熱模組題材發酵。但目前本益比飆升至 143 倍，乖離過大且股價已有透支未來成長之嫌，不建議追高，持有者宜逢高分批獲利了結。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>暫無</span></div>
+                <div class="target-item">目標價：<span>無</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="hold" data-search-text="6861 睿生光電 睿生光電 medical devices">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>睿生光電<span>6861</span></h2>
+                        <span class="stock-cat-badge">傳產醫療與材料</span>
+                    </div>
+                    <span class="badge-action badge-hold">強勢持有 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">342.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-positive">▲ +9.97%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">90.24 倍 / 0.64%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    今日（6/16）強勢帶量鎖漲停 (342元)，突破前波平台。智慧醫療與X光感測出貨爆發，短線動能極強，已持股者可沿5日線順勢抱緊，空手者避免過度追高。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>310 ~ 325 元</span></div>
+                <div class="target-item">目標價：<span>400 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="hold" data-search-text="7749 意騰-KY intelligo technology inc software - infrastructure">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>意騰-KY<span>7749</span></h2>
+                        <span class="stock-cat-badge">傳產醫療與材料</span>
+                    </div>
+                    <span class="badge-action badge-hold">區間操作 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">486.5 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -2.41%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">43.55416 倍 / -</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    高階半導體測試與探針卡設備商，受益於 CoWoS 封裝產能大幅擴張。股價處於高檔寬幅震盪整理，建議在 450-500 元間低買高賣區間操作。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>450 ~ 470 元</span></div>
+                <div class="target-item">目標價：<span>540 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="semiconductor" data-act="sell" data-search-text="8112 至上 supreme electronics co semiconductors">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>至上<span>8112</span></h2>
+                        <span class="stock-cat-badge">AI與半導體</span>
+                    </div>
+                    <span class="badge-action badge-sell">逢高減碼 (Sell)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">95.8 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -1.54%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">20.16842 倍 / 3.91%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    記憶體代理大廠。股價先前已大幅反映記憶體報價上漲行情，當前 PE 達 20 倍，評價面已無明顯估值窪地，建議逢高分批調節，保留資金靈活性。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>暫無</span></div>
+                <div class="target-item">目標價：<span>無</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="hold" data-search-text="8422 可寧衛 cleanaway company limited waste management">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>可寧衛<span>8422</span></h2>
+                        <span class="stock-cat-badge">傳產醫療與材料</span>
+                    </div>
+                    <span class="badge-action badge-hold">區間操作 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">28.05 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -2.43%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">25.27027 倍 / 4.17%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    特許環保與固廢處理龍頭。毛利極高、業務極其穩定且有 4.17% 殖利率防禦，但爆發力不足。定調為中性資產，建議於 27-29 元低買高賣操作。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>27.0 ~ 28.0 元</span></div>
+                <div class="target-item">目標價：<span>31.5 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="etf" data-act="buy" data-search-text="00403A 主動統一升級50 uni-president assets mgmt corp  ">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>主動統一升級50<span>00403A</span></h2>
+                        <span class="stock-cat-badge">ETF與特殊狀態</span>
+                    </div>
+                    <span class="badge-action badge-buy">定期定額 (Buy)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">10.7 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-positive">▲ +0.85%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">- / -</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    全新台股主動式 ETF，聚焦前 200 大市值個股，由經理人進行主動篩選與汰弱留強。景氣擴張大盤下，適合空手者透過定期定額配置，跟隨大盤成長。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>定期定額配置</span></div>
+                <div class="target-item">目標價：<span>長線大盤成長</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="sell" data-search-text="1313 聯成 upc technology co chemicals">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>聯成<span>1313</span></h2>
+                        <span class="stock-cat-badge">傳產醫療與材料</span>
+                    </div>
+                    <span class="badge-action badge-sell">觀望避開 (Sell)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">11.15 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span>0.00%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">-11.614583 倍 / 0.9%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    受中國石化產能過剩、塑化利差受擠壓影響，目前營運陷入虧損 (EPS -1.17)，股價低迷。目前缺乏催化劑與打底跡象，建議暫避、切勿搶反彈。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>暫無</span></div>
+                <div class="target-item">目標價：<span>無</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="buy" data-search-text="1477 聚陽 makalot industrial co apparel manufacturing">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>聚陽<span>1477</span></h2>
+                        <span class="stock-cat-badge">傳產醫療與材料</span>
+                    </div>
+                    <span class="badge-action badge-buy">分批佈局 (Buy)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">219.5 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-positive">▲ +0.69%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">15.05487 倍 / 6.88%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    美系客戶補庫存回溫，公司市佔率擴大。本益比僅 15 倍，且**殖利率高達 6.88%**（全市場前段班）。具備極佳的價值性與防守力，適合逢低長期建倉。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>210 ~ 220 元</span></div>
+                <div class="target-item">目標價：<span>260 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="energy" data-act="hold" data-search-text="1504 東元 teco electric & machinery co specialty industrial machinery">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>東元<span>1504</span></h2>
+                        <span class="stock-cat-badge">電力與能源</span>
+                    </div>
+                    <span class="badge-action badge-hold">區間操作 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">71.8 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -1.91%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">29.669422 倍 / 2.73%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    重電與綠能電網政策受惠股。近期雖有政策題材支持，但估值拉抬至 29 倍本益比，已合理反映成長預期。短線建議於 68-75 元間區間來回操作。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>68 ~ 71 元</span></div>
+                <div class="target-item">目標價：<span>80 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="hold" data-search-text="1773 勝一 shiny chemical industrial co. l chemicals">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>勝一<span>1773</span></h2>
+                        <span class="stock-cat-badge">傳產醫療與材料</span>
+                    </div>
+                    <span class="badge-action badge-hold">中性持有 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">177.5 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span>0.00%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">24.618586 倍 / 2.25%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    台積電先進製程電子化學品核心供應商，具高技術壁壘，配息極度穩定。目前本益比 24.6 倍處於合理評價中軌，建議持股長抱，空手者等待拉回 170 元附近再低接。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>168 ~ 174 元</span></div>
+                <div class="target-item">目標價：<span>205 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="hold" data-search-text="1785 光洋科 solar applied materials technol metal fabrication">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>光洋科<span>1785</span></h2>
+                        <span class="stock-cat-badge">傳產醫療與材料</span>
+                    </div>
+                    <span class="badge-action badge-hold">區間操作 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">142.5 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -2.06%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">45.527153 倍 / 1.37%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    貴金屬回收與半導體靶材大廠。金價高漲與半導體景氣復甦對營運有利，但近期 PE 偏高 (45.5倍)。短線動能放緩，建議在 135-148 元做箱型整理操作。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>135 ~ 140 元</span></div>
+                <div class="target-item">目標價：<span>165 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="semiconductor" data-act="hold" data-search-text="2308 台達電 delta electronic electronic components">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>台達電<span>2308</span></h2>
+                        <span class="stock-cat-badge">AI與半導體</span>
+                    </div>
+                    <span class="badge-action badge-hold">中性持有 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">2230.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-positive">▲ +0.9%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">97.04091 倍 / 0.52%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    伺服器電源、散熱與車用電子霸主，長線競爭力無庸置疑。但目前股價高達 2230 元，**PE 已推升至 97 倍**，估值過熱，中短期獲利空間有限，不宜此時追買，長線持股者可長抱。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>1900 ~ 2100 元</span></div>
+                <div class="target-item">目標價：<span>2450 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="semiconductor" data-act="hold" data-search-text="2327 國巨 yageo corp electronic components">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>國巨<span>2327</span></h2>
+                        <span class="stock-cat-badge">AI與半導體</span>
+                    </div>
+                    <span class="badge-action badge-hold">中性持有 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">950.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-positive">▲ +1.06%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">74.8621 倍 / 0.64%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    被動元件龍頭。受惠高階伺服器與車用MLCC需求持穩，長線結構轉佳。然 PE 達 74.8 倍偏高，短期缺乏新動能，持股者長抱，空手者等待乖離修正再行卡位。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>880 ~ 920 元</span></div>
+                <div class="target-item">目標價：<span>1100 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="semiconductor" data-act="buy" data-search-text="2330 台積電 taiwan semiconductor manufactur semiconductors">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>台積電<span>2330</span></h2>
+                        <span class="stock-cat-badge">AI與半導體</span>
+                    </div>
+                    <span class="badge-action badge-buy">逢低買進 (Buy)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">2400.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-positive">▲ +1.05%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">32.59541 倍 / 1.01%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    AI與先進製程霸主，CoWoS封裝產能嚴重吃緊提供極高議價權。本益比 32.6 倍在目前擴張期 regime 下非常合理。拉回短均線都是長線的核心建倉點。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>2280 ~ 2380 元</span></div>
+                <div class="target-item">目標價：<span>2800 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="etf" data-act="special" data-search-text="2384 勝華 勝華 ">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>勝華<span>2384</span></h2>
+                        <span class="stock-cat-badge">ETF與特殊狀態</span>
+                    </div>
+                    <span class="badge-action badge-special">特殊狀態 (Special)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">-</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-neutral">下市</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">- / -</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    **已於 2015 年正式下市**。目前無交易流通性，無法交易，此處僅供歷史資料追溯與清算淨值存查。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>無法交易</span></div>
+                <div class="target-item">目標價：<span>下市</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="hardware" data-act="hold" data-search-text="2402 毅嘉 ichia technologies inc electronic components">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>毅嘉<span>2402</span></h2>
+                        <span class="stock-cat-badge">網通與精密科技</span>
+                    </div>
+                    <span class="badge-action badge-hold">區間操作 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">70.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-positive">▲ +2.19%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">30.172415 倍 / 2.88%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    車用軟板與電子整合件出貨平穩。股價呈現高檔對稱三角形整理，建議在 65-73 元進行區間內低買高賣操作，突破後再行調整策略。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>65 ~ 67 元</span></div>
+                <div class="target-item">目標價：<span>80 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="hardware" data-act="buy" data-search-text="2439 美律 merry electronics co consumer electronics">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>美律<span>2439</span></h2>
+                        <span class="stock-cat-badge">網通與精密科技</span>
+                    </div>
+                    <span class="badge-action badge-buy">積極買進 (Buy)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">89.5 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -1.43%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">17.828686 倍 / 8.03%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    電聲元件大廠。本益比僅 17.8 倍，且**殖利率高達 8.03%**（全台股前列），極具安全邊際。基本面回溫、配息豐厚，為多頭防禦首選，建議積極逢低分批買進。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>85 ~ 89.5 元</span></div>
+                <div class="target-item">目標價：<span>108 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="hardware" data-act="sell" data-search-text="2495 普安 infortrend technology inc computer hardware">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>普安<span>2495</span></h2>
+                        <span class="stock-cat-badge">網通與精密科技</span>
+                    </div>
+                    <span class="badge-action badge-sell">逢高減碼 (Sell)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">49.5 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -1.98%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">44.19643 倍 / 2.57%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    儲存網路設備廠。近期股價因小池題材炒作而創高，但 PE 達 44.2 倍，其營收增速並無法支持此高估值，短線乖離過大，建議逢高分批獲利出場。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>暫無</span></div>
+                <div class="target-item">目標價：<span>無</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="buy" data-search-text="2609 陽明 yang ming marine transport corp marine shipping">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>陽明<span>2609</span></h2>
+                        <span class="stock-cat-badge">傳產醫療與材料</span>
+                    </div>
+                    <span class="badge-action badge-buy">逢低買進 (Buy)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">51.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -0.39%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">10.429448 倍 / 3.91%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    貨櫃航運巨頭。受惠地緣繞道與美歐旺季拉貨，5月營收年增 22.22%，P/B 僅 0.54 倍，股價極具防守力。季線扣抵即將進入低檔區，具均線扣低翻揚助漲潛力，逢低買進。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>50 ~ 51.2 元</span></div>
+                <div class="target-item">目標價：<span>57 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="semiconductor" data-act="buy" data-search-text="3036 文曄 wt microelectronics co ltd electronic components">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>文曄<span>3036</span></h2>
+                        <span class="stock-cat-badge">AI與半導體</span>
+                    </div>
+                    <span class="badge-action badge-buy">分批佈局 (Buy)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">219.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -3.1%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">19.043478 倍 / 3.45%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    全球半導體通路大廠。併購 Future Electronics 的高毛利整合效應顯現。PE 僅約 19 倍在同業中偏低，高成長動能提供高安全邊際，拉回 210 元附近可分批建倉。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>210 ~ 219 元</span></div>
+                <div class="target-item">目標價：<span>260 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="hardware" data-act="sell" data-search-text="3236 千如 abc taiwan electronics corp electronic components">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>千如<span>3236</span></h2>
+                        <span class="stock-cat-badge">網通與精密科技</span>
+                    </div>
+                    <span class="badge-action badge-sell">逢高減碼 (Sell)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">65.8 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -5.32%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">205.62502 倍 / 0.5%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    電感與被動元件廠。雖然具車用電氣化題材，但目前本益比因獲利衰退飆升至 **200倍以上**，投機泡沫過重，風險收益比極差，空手者避開，持有者宜解套賣出。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>暫無</span></div>
+                <div class="target-item">目標價：<span>無</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="hardware" data-act="hold" data-search-text="3558 神準 senao networks inc communication equipment">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>神準<span>3558</span></h2>
+                        <span class="stock-cat-badge">網通與精密科技</span>
+                    </div>
+                    <span class="badge-action badge-hold">區間操作 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">135.0 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -2.88%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">26.061777 倍 / 2.16%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    網通與資安設備商。受惠美國網路基建政策，但網通業去庫存尾聲仍有干擾，估值 26 倍基本合理。建議在 125-140 元區間底分批低吸，高檔調節。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>125 ~ 130 元</span></div>
+                <div class="target-item">目標價：<span>155 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="semiconductor" data-act="buy" data-search-text="3592 瑞鼎 raydium semi-conductor corporat semiconductors">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>瑞鼎<span>3592</span></h2>
+                        <span class="stock-cat-badge">AI與半導體</span>
+                    </div>
+                    <span class="badge-action badge-buy">積極買進 (Buy)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">270.5 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -1.81%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">15.103294 倍 / 8.06%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    AMOLED 與車用驅動 IC 廠。目前本益比僅 15.1 倍，且**殖利率高達 8.06%**，具備極高的估值防禦優勢。OLED 滲透率提高驅動下半年業績看俏，建議積極加碼買進。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>260 ~ 271 元</span></div>
+                <div class="target-item">目標價：<span>330 元</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="hardware" data-act="sell" data-search-text="4585 達明 techman robot inc specialty industrial machinery">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>達明<span>4585</span></h2>
+                        <span class="stock-cat-badge">網通與精密科技</span>
+                    </div>
+                    <span class="badge-action badge-sell">觀望避開 (Sell)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">306.5 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -0.81%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">211.3793 倍 / 0.32%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    興櫃股票，為協作機器人龍頭。長線具機器人與AI視覺長線紅利，但目前本益比已飆破 **200倍**，興櫃流動性溢價過高。建議等待上市櫃或股價回落合理區間再議。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>暫無</span></div>
+                <div class="target-item">目標價：<span>無</span></div>
+            </div>
+        </div>\n\n        <div class="stock-card" data-cat="hardware" data-act="hold" data-search-text="6191 精成科 global brands manufacture co lt electronic components">
+            <div>
+                <div class="card-header">
+                    <div class="stock-title">
+                        <h2>精成科<span>6191</span></h2>
+                        <span class="stock-cat-badge">網通與精密科技</span>
+                    </div>
+                    <span class="badge-action badge-hold">中性持有 (Hold)</span>
+                </div>
+                
+                <div class="quote-row">
+                    <div class="quote-item">
+                        <div class="quote-label">當前收盤</div>
+                        <div class="quote-val">100.5 元</div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">單日漲跌</div>
+                        <div class="quote-val"><span class="change-negative">▼ -2.43%</span></div>
+                    </div>
+                    <div class="quote-item">
+                        <div class="quote-label">本益比 / 殖利率</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">15.366973 倍 / 2.92%</div>
+                    </div>
+                </div>
+
+                <div class="strategy-body">
+                    PCB 與 EMS 代工廠。伺服器、車用板與筆電板拉貨持穩，本益比僅 15.3 倍，估值在行業中偏低，配息穩定，為良好的中性防守資產，持股者續抱即可。
+                </div>
+            </div>
+
+            <div class="target-row">
+                <div class="target-item">進場區間：<span>95 ~ 100 元</span></div>
+                <div class="target-item">目標價：<span>118 元</span></div>
+            </div>
+        </div>
+
+        <!-- No Results -->
+        <div class="no-results" id="noResults">
+            🔍 找不到符合篩選條件的股票，請重新輸入關鍵字或選擇其它篩選器。
+        </div>
+    </div>
+
+    <footer>
+        <p>台股個人 AI 監控系統 API 後端驅動 • 報告由 tw_stock_agent 專家推理系統自動生成</p>
+    </footer>
+</div>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const stocksGrid = document.getElementById('stocksGrid');
+    const noResults = document.getElementById('noResults');
+    const cards = document.querySelectorAll('.stock-card');
+    
+    let currentCat = 'all';
+    let currentAct = 'all';
+    let searchQuery = '';
+
+    // Category Filter Click
+    document.querySelectorAll('[data-filter-cat]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-filter-cat]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentCat = btn.getAttribute('data-filter-cat');
+            applyFilters();
+        });
+    });
+
+    // Action Filter Click
+    document.querySelectorAll('[data-filter-act]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-filter-act]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentAct = btn.getAttribute('data-filter-act');
+            applyFilters();
+        });
+    });
+
+    // Search Input Change
+    searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        applyFilters();
+    });
+
+    function applyFilters() {
+        let visibleCount = 0;
+        
+        cards.forEach(card => {
+            const cardCat = card.getAttribute('data-cat');
+            const cardAct = card.getAttribute('data-act');
+            const cardSearchText = card.getAttribute('data-search-text');
+            
+            const matchesCat = (currentCat === 'all' || cardCat === currentCat);
+            const matchesAct = (currentAct === 'all' || cardAct === currentAct);
+            const matchesSearch = (searchQuery === '' || cardSearchText.includes(searchQuery));
+            
+            if (matchesCat && matchesAct && matchesSearch) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        if (visibleCount === 0) {
+            noResults.style.display = 'block';
+        } else {
+            noResults.style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>

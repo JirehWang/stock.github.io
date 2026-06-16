@@ -471,6 +471,41 @@
             padding-top: 2rem;
         }
 
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem auto 2.5rem auto;
+            padding: 0.4rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--card-border);
+            border-radius: 50px;
+            backdrop-filter: var(--glass-blur);
+            max-width: fit-content;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             h1 {
@@ -482,12 +517,30 @@
             .stock-meta-info {
                 grid-template-columns: 1fr 1fr;
             }
+            .nav-bar {
+                width: 100%;
+                border-radius: 12px;
+                flex-direction: row;
+                gap: 0.5rem;
+            }
+            .nav-link {
+                flex: 1;
+                text-align: center;
+                padding: 0.5rem 0.5rem;
+                font-size: 0.85rem;
+                border-radius: 8px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link active">🎯 核心五大佈局股</a>
+        <a href="portfolio_analysis.html" class="nav-link">📊 29檔投組操作策略</a>
+    </nav>
+
     <header>
         <h1>台股五大可積極佈局優勢股報告</h1>
         <div class="header-meta">
