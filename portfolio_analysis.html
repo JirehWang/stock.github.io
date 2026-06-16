@@ -209,7 +209,7 @@
         /* Stock Cards Grid */
         .stocks-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
@@ -225,6 +225,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            min-height: 480px;
         }
 
         .stock-card:hover {
@@ -332,13 +333,79 @@
             color: var(--accent-red);
         }
 
-        /* Strategy Body */
-        .strategy-body {
-            font-size: 0.85rem;
+        /* ── Tabs Navigation ── */
+        .tabs-nav {
+            display: flex;
+            gap: 0.2rem;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.25rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.3rem 0.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-btn.active {
+            color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .tab-container {
+            position: relative;
+            min-height: 180px;
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+
+        .tab-content {
+            display: none;
+            font-size: 0.8rem;
             color: var(--text-secondary);
             line-height: 1.6;
-            margin-bottom: 1.2rem;
-            flex-grow: 1;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Deduction List inside Tabs */
+        .deduction-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+        }
+
+        .deduction-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.3rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+
+        .deduction-item span.price {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 0.1rem;
         }
 
         /* Target row */
@@ -348,6 +415,7 @@
             font-size: 0.8rem;
             padding-top: 0.8rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
         }
 
         .target-item span {
@@ -376,6 +444,11 @@
             font-size: 0.8rem;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(2px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         @media (max-width: 768px) {
             .stocks-grid {
                 grid-template-columns: 1fr;
@@ -402,7 +475,7 @@
     </nav>
 
     <header>
-        <h1>台股 29 檔個股投組操作分析</h1>
+        <h1>台股 29 檔個股四維度分析</h1>
         <div class="header-meta">
             <span class="badge badge-regime">多頭市場 (EXPANSION)</span>
             <span class="badge badge-count">共追蹤分析 29 檔標的</span>
@@ -412,7 +485,7 @@
     <!-- Controls Row -->
     <div class="controls-wrapper">
         <div class="search-row">
-            <input type="text" id="searchInput" class="search-input" placeholder="💡 輸入股票名稱、代碼或英文名稱進行搜尋...">
+            <input type="text" id="searchInput" class="search-input" placeholder="💡 輸入股票名稱、代碼進行搜尋...">
         </div>
         
         <!-- Filter Category -->
@@ -466,8 +539,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    全球UPS（不斷電系統）龍頭。受惠綠電與雲端資料中心大趨勢，高單價高防禦，殖利率高達 4.59% 提供優異保護，建議於 880-910 元分批低吸。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        全球UPS（不斷電系統）龍頭。隨著AI資料中心建置爆發，高階大型三相UPS出貨強勁，綠電與儲能電網整合需求提供長線高成長基底。在大盤EXPANSION擴張期中為防禦龍頭首選。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 25.903614 倍，股價淨值比為 7.667618 倍，EPS 為 34.86 元。財務結構極佳，長期毛利率與ROE位居電能產業頂尖水準。高單價帶來的定價權使獲利具高度韌性。配息大方，中長線投資價值高。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 1.01 倍。股權高度集中，外資與長線大戶鎖碼度高。近期回檔過程中浮額清洗乾淨，未見散戶追高套牢籌碼，有利於後市築底走揚。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 67.29，月線 MA20 位於 780.3 元，季線 MA50 位於 768.14 元。目前股價 (903.0元) 高於今日扣抵值 (739.0元) 且未來扣抵軌跡呈陡峭下行至 784.0元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">739.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">717.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">773.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">775.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">784.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -500,8 +615,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    高階伺服器電源、太空與衛星通訊電源出貨增溫。PE 僅約 17 倍具備良好性價比，且具 3.93% 殖利率防禦。季線附近為極佳中長線進場點。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        伺服器高階電源、太空衛星通訊接收器電源出貨比重拉高，產品組合持續優化。伴隨大盤景氣復甦，消費性與商用電能回溫，有利於帶動獲利重回成長軌道。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 17.786407 倍，股價淨值比為 2.5568736 倍，EPS 為 5.15 元。本益比與股價淨值比均處於歷史評價中軌偏低區。公司歷年配息穩定，具備中線的價值防守，基本面安全邊際高。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.81 倍。投信法人近期有階段性佈局跡象，融資餘額維持在低水位，籌碼穩定度佳，下檔有實質法人買盤支撐。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 54.58，月線 MA20 位於 94.73 元，季線 MA50 位於 85.49 元。目前股價 (91.6元) 高於今日扣抵值 (70.13元) 且未來扣抵軌跡呈陡峭下行至 86.84元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">70.13</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">78.39</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">74.74</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">74.26</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">86.84</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -534,8 +691,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    雖有散熱與電機驅動IC題材，但目前獲利轉負 (EPS -0.09)，估值推升至 57 倍以上，利潤率承壓，建議暫行觀望，待毛利改善再行操作。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        主攻功率半導體與電機控制IC。受終端消費電子需求復甦緩慢與價格戰影響，毛利率與營收承壓，散熱新產品放量仍需時間，短期缺乏強烈產業催化劑。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 57.23473 倍，股價淨值比為 7.051739 倍，EPS 為 -0.09 元。因獲利衰退，目前單季轉為虧損，估值偏高。基本面缺乏足夠利潤支撐，安全邊際不足，不建議在此階段進場冒險。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 2.43 倍。法人幾乎無持股，融資餘額亦無動靜，市場關注度極低，籌碼呈現冷清狀態，缺乏大戶拉抬動能。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 67.63，月線 MA20 位於 154.78 元，季線 MA50 位於 148.21 元。目前股價 (178.0元) 高於今日扣抵值 (108.0元) 且未來扣抵軌跡呈陡峭下行至 153.0元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">108.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">147.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">157.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">136.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">153.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -568,8 +767,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    輝達次世代架構將 BBU（電池備援系統）列為伺服器機櫃標配，公司為最大受惠者。股價處於歷史高檔，建議持股者沿 10 日線偏多抱緊，空手者等拉回月線再議。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        AI 伺服器將 BBU (電池備援系統) 列為標準配備，帶動公司高單價高毛利產品爆發成長。輕型電動車 (LEV) 歐洲去庫存結束，長線雙引擎趨勢確立。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 30.283167 倍，股價淨值比為 5.800988 倍，EPS 為 38.14 元。客製化電池包門檻高，毛利率高達 35-40% 居同業頂尖，EPS 具高度成長彈性。然而目前本益比偏高，評價已大部分反映 BBU 題材，宜持股續抱，空手者不宜追高。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.77 倍。母公司新普集團長期持股鎖碼，外資與投信法人高檔惜售，融資低檔，籌碼結構健康但流動性較小，股價易受少數大單影響震盪。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 49.63，月線 MA20 位於 nan 元，季線 MA50 位於 nan 元。目前股價 (1155.0元) 高於今日扣抵值 (957.0元) 且未來扣抵軌跡呈陡峭下行至 1120.0元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">957.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">987.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">1010.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">1225.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">1120.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -602,8 +843,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    伺服器散熱模組題材發酵。但目前本益比飆升至 143 倍，乖離過大且股價已有透支未來成長之嫌，不建議追高，持有者宜逢高分批獲利了結。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        受惠伺服器散熱模組（均熱板、散熱導管）升級題材。然而，散熱板產能競爭激烈，毛利提升有限，市場炒作情緒遠大於實質基本面獲利增幅。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 143.00203 倍，股價淨值比為 17.785067 倍，EPS 為 4.93 元。本益比超過 140 倍，評價嚴重高估，安全邊際極低。若獲利跟不上，將面臨巨大的估值修正風險。建議逢高獲利了結。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.57 倍。高檔投機氣氛濃厚，散戶融資大量湧入，法人則趁利多進行階段性獲利調節，籌碼逐漸轉為凌亂，追高風險極高。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 54.48，月線 MA20 位於 nan 元，季線 MA50 位於 nan 元。目前股價 (705.0元) 高於今日扣抵值 (386.5元) 且未來扣抵軌跡呈陡峭下行至 520.0元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">386.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">449.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">494.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">489.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">520.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -611,7 +894,7 @@
                 <div class="target-item">進場區間：<span>暫無</span></div>
                 <div class="target-item">目標價：<span>無</span></div>
             </div>
-        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="hold" data-search-text="6861 睿生光電 睿生光電 medical devices">
+        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="hold" data-search-text="6861 睿生光電 睿生光電 ">
             <div>
                 <div class="card-header">
                     <div class="stock-title">
@@ -636,8 +919,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    今日（6/16）強勢帶量鎖漲停 (342元)，突破前波平台。智慧醫療與X光感測出貨爆發，短線動能極強，已持股者可沿5日線順勢抱緊，空手者避免過度追高。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        X光感測器與智慧醫療面板出貨迎來爆發，客戶涵蓋全球醫療設備巨頭。受惠於醫療AI數位化與升級潮，下半年動能極強，今日爆量鎖漲停確立轉強格局。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 90.24 倍，股價淨值比為 9.19 倍，EPS 為 3.79 元。財務結構穩健，毛利表現符合預期。隨出貨量提升，單季營收與淨利皆見增長，唯目前本益比因今日漲停被拉抬至高檔，宜偏多持有，不建议盲目追價。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.37 倍。今日帶量長紅鎖漲停，主力和特定券商積極敲進，融資小幅增加但屬健康換手，短線籌碼動能強勁，注意高檔獲利回吐賣壓。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 38.87，月線 MA20 位於 nan 元，季線 MA50 位於 nan 元。目前股價低於扣抵區間。**季線扣抵值位於高檔 (128.15 ~ 393.89元)，均線呈現下彎助跌，需等待股價站穩季線後方可確立底部。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">128.15</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">131.63</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">176.33</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">266.24</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">393.89</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -670,8 +995,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    高階半導體測試與探針卡設備商，受益於 CoWoS 封裝產能大幅擴張。股價處於高檔寬幅震盪整理，建議在 450-500 元間低買高賣區間操作。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        半導體測試探針卡設備供應商，深度綁定 CoWoS 與先進封裝客戶，隨晶圓廠大舉擴產，設備出貨動能將延續至下半年。產業能見度高。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 43.55416 倍，股價淨值比為 5.745362 倍，EPS 為 11.17 元。高毛利技術壁壘提供高獲利保障，本益比 43 倍屬於設備股中高檔區間。由於股價波動劇烈，建議採取區間低買高賣操作，以保護利潤。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.62 倍。興櫃/初上市櫃特徵，股權集中於少數特定大戶。交投較為清淡，法人持股穩定，散戶融資少，籌碼易受特定大戶控盤。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 52.57，月線 MA20 位於 496.85 元，季線 MA50 位於 462.0 元。目前股價低於扣抵區間。**季線扣抵值位於高檔 (355.0 ~ 515.0元)，均線呈現下彎助跌，需等待股價站穩季線後方可確立底部。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">355.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">374.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">416.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">425.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">515.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -704,8 +1071,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    記憶體代理大廠。股價先前已大幅反映記憶體報價上漲行情，當前 PE 達 20 倍，評價面已無明顯估值窪地，建議逢高分批調節，保留資金靈活性。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        記憶體代理大廠。前波受惠於 DRAM 與 NAND 報價調漲而大幅上漲。但目前記憶體現貨價漲勢放緩，通路庫存利益高點已過，短期缺乏新的利多刺激。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 20.16842 倍，股價淨值比為 2.6622205 倍，EPS 為 4.75 元。本益比已推升至 20 倍，對比其歷史區間已合理偏高。高防守性殖利率優勢已隨股價創高而沖淡，下檔安全邊際減弱，建議逢高分批減碼。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.97 倍。高檔主力與外資持續賣超獲利了結，融資仍處於相對高位，籌碼由法人流向散戶，短線有拉回整理壓力，操作宜保守。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 61.43，月線 MA20 位於 89.76 元，季線 MA50 位於 86.29 元。目前股價 (95.8元) 高於今日扣抵值 (75.0元) 且未來扣抵軌跡呈陡峭下行至 84.8元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">75.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">80.8</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">85.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">89.1</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">84.8</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -713,7 +1122,7 @@
                 <div class="target-item">進場區間：<span>暫無</span></div>
                 <div class="target-item">目標價：<span>無</span></div>
             </div>
-        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="hold" data-search-text="8422 可寧衛 cleanaway company limited waste management">
+        </div>\n\n        <div class="stock-card" data-cat="traditional" data-act="hold" data-search-text="8422 可寧衛 可寧衛 ">
             <div>
                 <div class="card-header">
                     <div class="stock-title">
@@ -726,20 +1135,62 @@
                 <div class="quote-row">
                     <div class="quote-item">
                         <div class="quote-label">當前收盤</div>
-                        <div class="quote-val">28.05 元</div>
+                        <div class="quote-val">0.0 元</div>
                     </div>
                     <div class="quote-item">
                         <div class="quote-label">單日漲跌</div>
-                        <div class="quote-val"><span class="change-negative">▼ -2.43%</span></div>
+                        <div class="quote-val"><span>0.00%</span></div>
                     </div>
                     <div class="quote-item">
                         <div class="quote-label">本益比 / 殖利率</div>
-                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">25.27027 倍 / 4.17%</div>
+                        <div class="quote-val" style="font-size: 0.75rem; white-space: nowrap;">- / -</div>
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    特許環保與固廢處理龍頭。毛利極高、業務極其穩定且有 4.17% 殖利率防禦，但爆發力不足。定調為中性資產，建議於 27-29 元低買高賣操作。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        國內特許廢棄物與固廢掩埋龍頭。業務受高度法規限制，具備無可替代的護城河，獲利與現金流極為穩定。但因掩埋場容量限制，短期成長動能平緩。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 - 倍，股價淨值比為 - 倍，EPS 為 - 元。本益比 25 倍，具備 4.17% 穩定殖利率。公司無負債且現金流充沛，防守能力極佳，適合作為投資組合中的中性避險配置，建議低吸高拋區間操作。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.77 倍。籌碼多由國內壽險、政府基金與價值大戶長期鎖碼持有，幾乎無融資浮額，日均量極小，籌碼結構健康而安定。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 54.0，月線 MA20 位於 27.66 元，季線 MA50 位於 28.14 元。目前股價低於扣抵區間。**季線扣抵值位於高檔 (28.75 ~ 28.35元)，均線呈現下彎助跌，需等待股價站穩季線後方可確立底部。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">28.75</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">29.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">29.7</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">28.1</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">28.35</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -772,8 +1223,29 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    全新台股主動式 ETF，聚焦前 200 大市值個股，由經理人進行主動篩選與汰弱留強。景氣擴張大盤下，適合空手者透過定期定額配置，跟隨大盤成長。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        主動式台股 ETF，聚焦市值前 50 大核心龍頭，並以市值 51-200 名為增強池，進行主動式持股汰弱留強。在景氣擴張大盤下，能有效掌握產業輪動。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 - 倍，股價淨值比為 None 倍，EPS 為 None 元。由於是全新主動式基金，內扣經理費略高於被動型ETF，但主動挑選持股有望在多頭市場中創造超額報酬 (Alpha)。適合長線資產配置。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.97 倍。主動式 ETF 無特定主力鎖碼，籌碼隨市場定期定額資金穩定流入，具高流動性，無單一籌碼過熱風險。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 49.51，月線 MA20 位於 nan 元，季線 MA50 位於 10.7 元。技術面指標與扣抵值計算不足，目前處於盤整打底階段。</div>
+                        
+                    </div>
                 </div>
             </div>
 
@@ -806,8 +1278,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    受中國石化產能過剩、塑化利差受擠壓影響，目前營運陷入虧損 (EPS -1.17)，股價低迷。目前缺乏催化劑與打底跡象，建議暫避、切勿搶反彈。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        主力產品為可塑劑 (DOP) 及鄰二甲苯。受中國石化產能持續開出、產能嚴重過剩影響，產品利差持續惡化。塑化傳統產業營運處於寒冬期，目前未見復甦跡象。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 -11.614583 倍，股價淨值比為 0.4974791 倍，EPS 為 -1.17 元。目前營運呈虧損狀態 (EPS -1.17)，估值淨值比雖低，但無實質獲利支撐，安全邊際極差，不建議盲目搶反彈。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.57 倍。法人與中線大戶避開持股，融資水位雖在低檔但買盤竭盡，缺乏主流資金關照，技術與籌碼面皆無打底完成訊號。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 51.53，月線 MA20 位於 10.89 元，季線 MA50 位於 11.31 元。目前股價高於未來扣抵值 (10.95元) 但低於今日扣抵 (12.65元)。**季線將在短期內走平，隨後扣低轉上揚，助漲防守力逐漸增強。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">12.65</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">12.8</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">11.95</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">11.35</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">10.95</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -840,8 +1354,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    美系客戶補庫存回溫，公司市佔率擴大。本益比僅 15 倍，且**殖利率高達 6.88%**（全市場前段班）。具備極佳的價值性與防守力，適合逢低長期建倉。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        美系服飾品牌零售商庫存去化結束，回補動能穩定。公司藉由產能彈性調度與高單價運動機能服出貨提升，市佔率持續擴大，景氣回升受惠深。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 15.05487 倍，股價淨值比為 4.165323 倍，EPS 為 14.58 元。本益比 15 倍處於歷史區間下檔。最關鍵的是**殖利率高達 6.88%**，配息極佳且基本面穩健，為全市場價值防禦度極高之首選。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 1.25 倍。投信法人近期逢低默默加碼持股，外資短線賣壓已竭。融資水位處於低水位，籌碼穩定度高，利於低檔佈局。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 44.51，月線 MA20 位於 220.68 元，季線 MA50 位於 219.21 元。目前股價 (219.5元) 高於今日扣抵值 (219.0元) 且未來扣抵軌跡呈陡峭下行至 211.0元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">219.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">215.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">225.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">215.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">211.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -874,8 +1430,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    重電與綠能電網政策受惠股。近期雖有政策題材支持，但估值拉抬至 29 倍本益比，已合理反映成長預期。短線建議於 68-75 元間區間來回操作。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        重電大廠，受惠台電強韌電網計畫、綠能儲能工程與馬達電氣化需求。長線政策題材保護性佳，但短期大型工程放量進度已大致反映於股價中。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 29.669422 倍，股價淨值比為 2.0021193 倍，EPS 為 2.42 元。本益比約 29 倍已合理反映其政策成長性，評價偏高。但高ROE與穩定的現金流仍具防禦效果。建議區間低買高賣操作以賺取利差。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.49 倍。三大法人高檔呈現寬幅調節，特定集團交叉持股鎖碼度仍高。整體籌碼處於大型箱型整理區間，無失控賣壓。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 51.22，月線 MA20 位於 73.53 元，季線 MA50 位於 68.35 元。目前股價 (71.8元) 高於今日扣抵值 (60.7元) 且未來扣抵軌跡呈陡峭下行至 68.5元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">60.7</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">60.4</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">61.8</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">61.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">68.5</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -908,8 +1506,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    台積電先進製程電子化學品核心供應商，具高技術壁壘，配息極度穩定。目前本益比 24.6 倍處於合理評價中軌，建議持股長抱，空手者等待拉回 170 元附近再低接。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        電子級化學溶劑大廠，主要客戶為台積電等半導體巨頭。先進封裝與先進製程清洗製程對化學品規格要求極高，公司具備獨佔性壁壘，長線需求穩健。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 24.618586 倍，股價淨值比為 4.490033 倍，EPS 為 7.21 元。毛利率與營業利益率表現穩定，PE 24.6 倍處於歷史合理範圍。高技術壁壘保證了配息的穩定度。建議持股長抱，空手者等拉回再買。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.38 倍。外資持股比重穩定，本土投信高檔部分獲利了結。融資低檔，幾乎無投機浮額，籌碼安定度極佳。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 51.85，月線 MA20 位於 178.57 元，季線 MA50 位於 171.0 元。目前股價低於扣抵區間。**季線扣抵值位於高檔 (145.5 ~ 179.0元)，均線呈現下彎助跌，需等待股價站穩季線後方可確立底部。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">145.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">152.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">159.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">179.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">179.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -942,8 +1582,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    貴金屬回收與半導體靶材大廠。金價高漲與半導體景氣復甦對營運有利，但近期 PE 偏高 (45.5倍)。短線動能放緩，建議在 135-148 元做箱型整理操作。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        貴金屬回收精煉及半導體/硬碟靶材製造大廠。隨半導體景氣復甦與金價高檔震盪，貴金屬業務利差擴大。但硬碟靶材成長動能平緩。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 45.527153 倍，股價淨值比為 5.107344 倍，EPS 為 3.13 元。本益比 45 倍偏高，主因是貴金屬跌價損失提列風險降低，但實質本業 EPS 成長有限，下檔空間雖有靶材保護但評價偏貴，定調區間操作。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.71 倍。近期外資法人高檔調節，投信無明顯動作。融資小幅攀升，顯示有部分散戶資金入場追逐題材，籌碼進入高檔整理期。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 51.78，月線 MA20 位於 143.07 元，季線 MA50 位於 144.7 元。目前股價低於扣抵區間。**季線扣抵值位於高檔 (88.1 ~ 160.0元)，均線呈現下彎助跌，需等待股價站穩季線後方可確立底部。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">88.1</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">127.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">153.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">149.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">160.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -976,8 +1658,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    伺服器電源、散熱與車用電子霸主，長線競爭力無庸置疑。但目前股價高達 2230 元，**PE 已推升至 97 倍**，估值過熱，中短期獲利空間有限，不宜此時追買，長線持股者可長抱。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        全球電力電子與伺服器電源霸主，受惠 AI 伺服器高耗能電源與液冷散熱模組需求大爆發，在新能源車與儲能領域同樣具備領導地位，長線產業極佳。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 97.04091 倍，股價淨值比為 19.337831 倍，EPS 為 22.98 元。基本面卓越，EPS 22.98 元反映出極強的獲利力。然而目前股價高達 2230 元，**PE 已推升至 97 倍**，估值嚴重過熱，短期空間受到壓制。持股長抱，不宜新進追高。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.78 倍。外資大戶與國內投信近期呈現買賣拉鋸，持股水位仍高但無推升熱情。融資水位極低，無踩踏風險，籌碼面呈現高位橫盤。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 49.57，月線 MA20 位於 2268.25 元，季線 MA50 位於 2094.1 元。目前股價 (2230.0元) 高於今日扣抵值 (1430.0元) 且未來扣抵軌跡呈陡峭下行至 2165.0元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">1430.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">1740.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">1900.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">2020.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">2165.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1010,8 +1734,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    被動元件龍頭。受惠高階伺服器與車用MLCC需求持穩，長線結構轉佳。然 PE 達 74.8 倍偏高，短期缺乏新動能，持股者長抱，空手者等待乖離修正再行卡位。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        被動元件 MLCC 與電阻巨頭。受惠於車用電子占比拉高與高階伺服器拉貨穩定，利潤率轉佳。然而常規被動元件市場目前僅呈溫和復甦，爆發力稍顯不足。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 74.8621 倍，股價淨值比為 11.707149 倍，EPS 為 12.69 元。本益比達 74.8 倍，評價已達近年高檔區，獲利增速可能趕不上目前的高估值。防守能力尚可，但性價比偏低，持股續抱，空手者等待回調。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.83 倍。外資近期高檔調節，投信小幅承接，融資維持在安全區間。整體籌碼結構偏向中性橫盤，缺乏大動能。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 79.35，月線 MA20 位於 732.98 元，季線 MA50 位於 495.31 元。目前股價 (950.0元) 高於今日扣抵值 (244.25元) 且未來扣抵軌跡呈陡峭下行至 346.02元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">244.25</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">301.34</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">317.22</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">302.83</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">346.02</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1044,8 +1810,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    AI與先進製程霸主，CoWoS封裝產能嚴重吃緊提供極高議價權。本益比 32.6 倍在目前擴張期 regime 下非常合理。拉回短均線都是長線的核心建倉點。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        AI與先進製程絕對霸主，N3/N2產能滿載，CoWoS封裝供不應求提供極高定價權。美國熊本海外廠雙雙獲利轉正，長線毛利率將站穩 53% 以上，毫無競爭對手。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 32.59541 倍，股價淨值比為 10.564961 倍，EPS 為 73.63 元。本益比 32.6 倍在目前 AI 景氣擴張大潮下屬於非常健康的位階。高ROE與龐大資本支出形成極高的競爭壁壘，安全邊際極強。拉回皆為建倉點。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.77 倍。全球外資、主權基金與壽險長線大戶的核心持股。融資水位極低，籌碼面極其沉澱乾淨，法人籌碼結構極度健康。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 60.5，月線 MA20 位於 2300.04 元，季線 MA50 位於 2193.82 元。目前股價 (2400.0元) 高於今日扣抵值 (1805.18元) 且未來扣抵軌跡呈陡峭下行至 2244.01元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">1805.18</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">1984.71</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">2019.61</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">2258.97</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">2244.01</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1053,7 +1861,7 @@
                 <div class="target-item">進場區間：<span>2280 ~ 2380 元</span></div>
                 <div class="target-item">目標價：<span>2800 元</span></div>
             </div>
-        </div>\n\n        <div class="stock-card" data-cat="etf" data-act="special" data-search-text="2384 勝華 勝華 ">
+        </div>\n\n        <div class="stock-card" data-cat="etf" data-act="special" data-search-text="2384 勝華 勝華 已下市">
             <div>
                 <div class="card-header">
                     <div class="stock-title">
@@ -1078,8 +1886,29 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    **已於 2015 年正式下市**。目前無交易流通性，無法交易，此處僅供歷史資料追溯與清算淨值存查。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        前中小型面板與觸控面板大廠，因過度擴產導致財務危機，**已於 2015 年正式下市**。目前無任何交易流通性，此處僅作歷史檔案紀錄與存查之用。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        無獲利數據，清算已完結。無任何安全邊際與基本面可言，無法進行任何投資決策。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        籌碼已全數清算或歸零，無任何市場買賣流通，籌碼結構已無實質分析意義。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>已下市無技術指標</div>
+                        
+                    </div>
                 </div>
             </div>
 
@@ -1112,8 +1941,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    車用軟板與電子整合件出貨平穩。股價呈現高檔對稱三角形整理，建議在 65-73 元進行區間內低買高賣操作，突破後再行調整策略。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        主要產品為車用 FPC 軟板及光電觸控整合件。車用電氣化需求穩定，但消費性電子衰退壓制成長。目前整體營運表現持平，缺乏突破性大動能。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 30.172415 倍，股價淨值比為 3.029516 倍，EPS 為 2.32 元。本益比約 30 倍合理偏高，配息率與殖利率表現一般，估值偏向合理。防禦性尚可，建議在 65-73 元進行低買高賣操作以賺取波段價差。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 1.12 倍。主力法人無積極作多動作，日成交量偏低，融資無失控現象。籌碼處於橫盤整理，不具備主流大戶上攻契機。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 54.35，月線 MA20 位於 66.1 元，季線 MA50 位於 67.39 元。目前股價低於扣抵區間。**季線扣抵值位於高檔 (52.8 ~ 72.6元)，均線呈現下彎助跌，需等待股價站穩季線後方可確立底部。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">52.8</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">67.4</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">77.3</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">69.4</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">72.6</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1146,8 +2017,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    電聲元件大廠。本益比僅 17.8 倍，且**殖利率高達 8.03%**（全台股前列），極具安全邊際。基本面回溫、配息豐厚，為多頭防禦首選，建議積極逢低分批買進。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        電聲元件與高階耳機代工大廠。受惠於手機新機拉貨與電競耳機需求回溫，出貨穩健。公司產業地位穩固，在景氣復甦期業績復甦能見度高。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 17.828686 倍，股價淨值比為 1.3376777 倍，EPS 為 5.02 元。本益比僅 17.8 倍，且**殖利率高達 8.03%**！高配息加上低本益比提供了強大的安全邊際與抗震能力，為價值防守的黃金標的。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.89 倍。投信法人近期逢低穩定買超，外資賣壓清洗完畢。融資水位極低，散戶參與度低，籌碼穩定度高，利於左側建倉。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 53.38，月線 MA20 位於 90.27 元，季線 MA50 位於 88.29 元。目前股價低於扣抵區間。**季線扣抵值位於高檔 (83.8 ~ 89.5元)，均線呈現下彎助跌，需等待股價站穩季線後方可確立底部。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">83.8</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">86.8</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">88.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">88.7</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">89.5</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1180,8 +2093,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    儲存網路設備廠。近期股價因小池題材炒作而創高，但 PE 達 44.2 倍，其營收增速並無法支持此高估值，短線乖離過大，建議逢高分批獲利出場。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        中階磁碟陣列與網路儲存設備 (NAS) 製造商。近期受私有雲與資料中心話題炒作，股價投機性飆高，但其核心本業營收與市佔率並未見實質性轉變。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 44.19643 倍，股價淨值比為 2.894229 倍，EPS 為 1.12 元。本益比 44 倍，相對於其低速成長的營收表現，估值已過度透支，缺乏防守力。建議趁股價高檔，逢高減碼出場，落袋為安。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 1.24 倍。投信無持股，近期主要是短線自營商與融資投機買盤湧入。高檔爆量且波動劇烈，籌碼面漸顯凌亂，套牢風險大增。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 59.25，月線 MA20 位於 47.55 元，季線 MA50 位於 42.56 元。目前股價 (49.5元) 高於今日扣抵值 (32.0元) 且未來扣抵軌跡呈陡峭下行至 41.65元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">32.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">39.4</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">42.45</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">40.85</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">41.65</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1214,8 +2169,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    貨櫃航運巨頭。受惠地緣繞道與美歐旺季拉貨，5月營收年增 22.22%，P/B 僅 0.54 倍，股價極具防守力。季線扣抵即將進入低檔區，具均線扣低翻揚助漲潛力，逢低買進。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        貨櫃航運巨頭。紅海危機繞道常態化消耗運力，美線歐線旺季拉貨力道強勁，SCFI運價指數維持高檔。5月營收年增 22.22%，下半年獲利看俏。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 10.429448 倍，股價淨值比為 0.54137826 倍，EPS 為 4.89 元。股價淨值比 (P/B) 僅 **0.54 倍**，評價處於歷史極低水準，公司手握充沛現金，估值防禦力極強，下檔風險有限 (距60日低點僅6.5%)。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.92 倍。短線法人雖有獲利調節調節（外資賣超），但融資水位同步下滑，散戶籌碼沉澱乾淨。社群輿情清冷，為左側極佳買點。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 47.43，月線 MA20 位於 52.19 元，季線 MA50 位於 51.03 元。目前股價高於未來扣抵值 (50.1元) 但低於今日扣抵 (52.1元)。**季線將在短期內走平，隨後扣低轉上揚，助漲防守力逐漸增強。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">52.1</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">50.6</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">50.1</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">49.35</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">50.1</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1248,8 +2245,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    全球半導體通路大廠。併購 Future Electronics 的高毛利整合效應顯現。PE 僅約 19 倍在同業中偏低，高成長動能提供高安全邊際，拉回 210 元附近可分批建倉。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        全球第二大半導體通路商。併購 Future Electronics 的高毛利整合效應顯現。受惠 AI 伺服器與高階晶片需求增加，公司具備通路龍頭的溢價優勢。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 19.043478 倍，股價淨值比為 2.4661884 倍，EPS 為 11.5 元。本益比 19 倍在通路股中偏低，高成長動能提供高安全邊際。未來幾季毛利率改善趨勢確立，拉回 210 元附近可分批建倉。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.85 倍。外資持股比重穩定，本土投信法人高檔部分調節但力道轉弱。融資餘額處於相對低水位，整體籌碼結構健康。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 33.55，月線 MA20 位於 267.09 元，季線 MA50 位於 240.51 元。目前股價 (219.0元) 高於今日扣抵值 (217.79元) 且未來扣抵軌跡呈陡峭下行至 203.2元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">217.79</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">221.68</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">210.98</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">195.42</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">203.2</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1282,8 +2321,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    電感與被動元件廠。雖然具車用電氣化題材，但目前本益比因獲利衰退飆升至 **200倍以上**，投機泡沫過重，風險收益比極差，空手者避開，持有者宜解套賣出。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        主攻電感器及精密線圈。受車用電氣化題材帶動，但近年消費性電子衰退使獲利大幅缩水，短期本業基本面未見實質性好轉，缺乏強大動能。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 205.62502 倍，股價淨值比為 4.2517447 倍，EPS 為 0.32 元。獲利大幅衰退，本益比因分母縮小而飆升至 **205倍**，估值嚴重失真，無任何安全邊際與基本面支撐，建議持股者趁早減碼出場。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 4.01 倍。主要是市場短線投機主力與融資買盤推升股價，法人避開，融資餘額無退火跡象，籌碼呈現過熱凌亂特徵。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 74.27，月線 MA20 位於 54.55 元，季線 MA50 位於 41.8 元。目前股價 (65.8元) 高於今日扣抵值 (30.5元) 且未來扣抵軌跡呈陡峭下行至 32.0元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">30.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">34.6</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">33.9</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">29.55</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">32.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1316,8 +2397,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    網通與資安設備商。受惠美國網路基建政策，但網通業去庫存尾聲仍有干擾，估值 26 倍基本合理。建議在 125-140 元區間底分批低吸，高檔調節。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        網通與網路安全伺服器大廠。長期受惠於美國基建政策，但網通產業目前仍處於去庫存尾聲，下半年出貨復甦能見度高，唯短期仍有拉貨干擾。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 26.061777 倍，股價淨值比為 1.3032272 倍，EPS 為 5.18 元。本益比 26 倍基本合理反映其基建成長潛力，但爆發力不足。配息一般。防守尚可，建議於 125-140 元寬幅整理區內低吸高拋操作。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.51 倍。法人持股維持中性水位，無大幅加碼，融資水位安全。籌碼結構偏向橫盤震盪，適合區間交易操作。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 59.06，月線 MA20 位於 133.57 元，季線 MA50 位於 120.47 元。目前股價 (135.0元) 高於今日扣抵值 (108.5元) 且未來扣抵軌跡呈陡峭下行至 112.0元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">108.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">107.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">114.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">109.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">112.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1350,8 +2473,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    AMOLED 與車用驅動 IC 廠。目前本益比僅 15.1 倍，且**殖利率高達 8.06%**，具備極高的估值防禦優勢。OLED 滲透率提高驅動下半年業績看俏，建議積極加碼買進。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        AMOLED 及高階車用/IT 驅動 IC 廠。受惠下半年新機發表與車用面板滲透率大幅提升，下半年晶片需求看俏，產品單價穩定，動能逐漸轉強。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 15.103294 倍，股價淨值比為 1.907872 倍，EPS 為 17.91 元。本益比僅 15.1 倍極具價值，且**殖利率高達 8.06%**，高配息與低估值在半導體族群中極為罕見。安全邊際極高，強烈建議分批買進。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.46 倍。外資賣壓已徹底宣洩，本土投信法人高檔低接持股比重攀升。融資在歷史低檔，幾乎無浮額，籌碼極度乾淨。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 54.74，月線 MA20 位於 nan 元，季線 MA50 位於 nan 元。目前股價 (270.5元) 高於今日扣抵值 (218.0元) 且未來扣抵軌跡呈陡峭下行至 241.0元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">218.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">230.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">237.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">236.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">241.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1384,8 +2549,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    興櫃股票，為協作機器人龍頭。長線具機器人與AI視覺長線紅利，但目前本益比已飆破 **200倍**，興櫃流動性溢價過高。建議等待上市櫃或股價回落合理區間再議。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        興櫃股票，主攻協作型機器人與 AI 機器人視覺系統。長線深度享有 AI 機器人紅利，但目前市場投機氣氛過高，本益比已飆破 **211倍**，興櫃溢價過重。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 211.3793 倍，股價淨值比為 4.66621 倍，EPS 為 1.45 元。獲利表現尚未跟上目前的超高估值，基本面缺乏實質支撐，清算價值極低。興櫃流動性較差，不建置在此價位追高，建議觀望。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 0.34 倍。興櫃股票交投易被大戶特定籌碼操縱，籌碼呈現極度集中且流動性差，散戶買進易受流動性鎖死風險，建議暫避。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 40.89，月線 MA20 位於 337.83 元，季線 MA50 位於 326.01 元。目前股價低於扣抵區間。**季線扣抵值位於高檔 (285.18 ~ 341.02元)，均線呈現下彎助跌，需等待股價站穩季線後方可確立底部。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">285.18</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">297.15</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">311.11</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">308.12</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">341.02</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1418,8 +2625,50 @@
                     </div>
                 </div>
 
-                <div class="strategy-body">
-                    PCB 與 EMS 代工廠。伺服器、車用板與筆電板拉貨持穩，本益比僅 15.3 倍，估值在行業中偏低，配息穩定，為良好的中性防守資產，持股者續抱即可。
+                <!-- 四大面向互動 Tab 選單 -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="macro">總經/產業</button>
+                    <button class="tab-btn" data-tab="fund">基本面</button>
+                    <button class="tab-btn" data-tab="chips">籌碼面</button>
+                    <button class="tab-btn" data-tab="tech">技術/扣抵</button>
+                </div>
+
+                <!-- Tab 內容容器 -->
+                <div class="tab-container">
+                    <div class="tab-content active" data-tab-content="macro">
+                        主要為電腦、伺服器與車用 PCB 與 EMS 廠。隨筆電景氣溫和復甦、車用板穩定出貨，營收溫和。缺乏爆炸性成長催化劑，但在手訂單穩定。
+                    </div>
+                    <div class="tab-content" data-tab-content="fund">
+                        本益比為 15.366973 倍，股價淨值比為 1.8119861 倍，EPS 為 6.54 元。本益比 15.3 倍，股價淨值比處於合理低檔，基本面具防禦力。每年配息率合理，為防守型中性資產，建議持股長抱，空手者等待回調再買。
+                    </div>
+                    <div class="tab-content" data-tab-content="chips">
+                        單日量能趨勢為 2.59 倍。本土大戶與法人長抱持股，融資無過熱，股價波動度較低，籌碼極具防守性，屬於典型的防禦性資產。
+                    </div>
+                    <div class="tab-content" data-tab-content="tech">
+                        <div>目前 RSI(14) 為 58.42，月線 MA20 位於 96.59 元，季線 MA50 位於 98.6 元。目前股價 (100.5元) 高於今日扣抵值 (88.3元) 且未來扣抵軌跡呈陡峭下行至 100.0元。**季線扣抵將進入低檔區，助漲軌道正成型。**</div>
+                                            <div class="deduction-list">
+                                                <div class="deduction-item">
+                            <span>今日</span>
+                            <span class="price">88.3</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+5天</span>
+                            <span class="price">95.4</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+10天</span>
+                            <span class="price">114.5</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+15天</span>
+                            <span class="price">107.0</span>
+                        </div>
+                        <div class="deduction-item">
+                            <span>+20天</span>
+                            <span class="price">100.0</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1502,6 +2751,33 @@
             noResults.style.display = 'none';
         }
     }
+
+    // Tabs Navigation Interactive Logic for 29 cards
+    document.querySelectorAll('.stock-card').forEach(card => {
+        const sym = card.getAttribute('data-search-text').split(' ')[0];
+        const buttons = card.querySelectorAll('.tab-btn');
+        const container = card.querySelector('.tab-container');
+        
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                
+                // Toggle active state in buttons
+                buttons.forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Toggle active state in contents
+                const contents = container.querySelectorAll('.tab-content');
+                contents.forEach(content => {
+                    if (content.getAttribute('data-tab-content') === targetTab) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            });
+        });
+    });
 </script>
 </body>
 </html>
